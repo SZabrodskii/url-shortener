@@ -1,3 +1,3 @@
-module github.com/SZabrodskii/go-musthave-shortener-tpl
+module github.com/SZabrodskii/url-shortener
 
 go 1.25.7
