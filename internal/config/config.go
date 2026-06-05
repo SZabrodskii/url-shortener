@@ -1,6 +1,11 @@
 package config
 
-import "go.uber.org/fx"
+import (
+	"flag"
+	"os"
+
+	"go.uber.org/fx"
+)
 
 type ServerAddr string
 type BaseURL string
@@ -12,11 +17,22 @@ type applicationConfig struct {
 	BaseURL    BaseURL
 }
 
-func newConfig() applicationConfig {
-	return applicationConfig{
-		ServerAddr: ":8080",
-		BaseURL:    "http://localhost:8080",
+func newConfig() (applicationConfig, error) {
+	var serverAddr string
+	var baseURL string
+
+	fs := flag.NewFlagSet("shortener", flag.ContinueOnError)
+	fs.StringVar(&serverAddr, "a", ":8080", "...")
+	fs.StringVar(&baseURL, "b", "http://localhost:8080", "...")
+	err := fs.Parse(os.Args[1:])
+	if err != nil {
+		return applicationConfig{}, err
 	}
+
+	return applicationConfig{
+		ServerAddr: ServerAddr(serverAddr),
+		BaseURL:    BaseURL(baseURL),
+	}, nil
 }
 
 func Provide() fx.Option {
