@@ -16,7 +16,7 @@ type AsHandlerOut struct {
 	Handler *httpbara.Handler `group:"handlers"`
 }
 
-type EngineIn struct {
+type engineIn struct {
 	fx.In
 
 	Handlers   []*httpbara.Handler `group:"handlers"`
@@ -24,7 +24,7 @@ type EngineIn struct {
 	LC         fx.Lifecycle
 }
 
-func NewEngine(in EngineIn) (httpbara.Engine, error) {
+func NewEngine(in engineIn) (httpbara.Engine, error) {
 	g := gin.New()
 	g.Use(gin.Recovery())
 
